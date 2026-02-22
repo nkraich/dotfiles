@@ -14,9 +14,10 @@ config.color_scheme = 'Catppuccin Mocha'
 config.window_decorations    = "RESIZE"
 config.window_padding        = { left = 4, right = 4, top = 4, bottom = 4 }
 config.hide_tab_bar_if_only_one_tab = true
+config.window_close_confirmation    = "NeverPrompt"
 
 -- ── Startup: maximize window and attach to (or create) main tmux session ───────
-config.default_prog = { '/opt/homebrew/bin/tmux', 'new-session', '-A', '-s', 'main' }
+config.default_prog = { os.getenv('HOME') .. '/.config/tmux/start.sh' }
 
 wezterm.on('gui-startup', function(cmd)
   local _, _, window = wezterm.mux.spawn_window(cmd or {})
