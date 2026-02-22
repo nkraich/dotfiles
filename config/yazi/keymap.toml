@@ -1,0 +1,40 @@
+# Yazi keymap overrides
+# Full default keymap reference: https://yazi-rs.github.io/docs/configuration/keymap
+
+[manager]
+keymap = [
+  # Open file in neovim (via yazi.toml opener "edit")
+  { on = "<Enter>", run = "open",             desc = "Open file in neovim" },
+  { on = "o",       run = "open",             desc = "Open file in neovim" },
+
+  # Navigation
+  { on = "h",       run = "leave",            desc = "Go to parent directory" },
+  { on = "l",       run = "enter",            desc = "Enter directory / open file" },
+  { on = "j",       run = "arrow 1",          desc = "Move down" },
+  { on = "k",       run = "arrow -1",         desc = "Move up" },
+  { on = "g",       run = "arrow -99999999",  desc = "Go to top" },
+  { on = "G",       run = "arrow 99999999",   desc = "Go to bottom" },
+
+  # Toggle hidden files
+  { on = ".",       run = "hidden toggle",    desc = "Toggle hidden files" },
+
+  # File operations
+  { on = "y",       run = "yank",             desc = "Yank (copy) selected files" },
+  { on = "x",       run = "yank --cut",       desc = "Cut selected files" },
+  { on = "p",       run = "paste",            desc = "Paste files" },
+  { on = "d",       run = "trash",            desc = "Move to trash" },
+  { on = "r",       run = "rename --cursor=before_ext", desc = "Rename file" },
+  { on = "a",       run = "create",           desc = "Create file or directory" },
+
+  # Search
+  { on = "/",       run = "find",             desc = "Search in current directory" },
+  { on = "n",       run = "find_arrow",       desc = "Next search result" },
+  { on = "N",       run = "find_arrow --previous", desc = "Previous search result" },
+
+  # Selection
+  { on = "<Space>", run = "select --state=none", desc = "Toggle selection" },
+  { on = "A",       run = "select_all --state=none", desc = "Toggle all selections" },
+
+  # Quit yazi
+  { on = "q",       run = "quit",             desc = "Quit yazi" },
+]

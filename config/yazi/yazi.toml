@@ -1,0 +1,38 @@
+[manager]
+ratio          = [1, 3, 4]   # sidebar:current:preview column widths
+sort_by        = "alphabetical"
+sort_dir_first = true
+show_hidden    = false
+show_symlink   = true
+
+[preview]
+max_width  = 1000
+max_height = 1000
+
+[opener]
+# Open files in the running neovim instance via neovim-remote.
+# --remote-wait opens the file and waits for the buffer to be closed before
+# returning control to yazi.
+edit = [
+  { run = 'nvr --remote-wait "$@"', block = true, for = "unix" },
+]
+
+[open]
+rules = [
+  # Directories — open in yazi (default)
+  { name = "*/", use = ["edit"] },
+
+  # Text and code files — open in neovim
+  { mime = "text/*",                use = ["edit"] },
+  { mime = "application/json",      use = ["edit"] },
+  { mime = "application/toml",      use = ["edit"] },
+  { mime = "application/xml",       use = ["edit"] },
+  { mime = "application/javascript",use = ["edit"] },
+  { mime = "application/typescript",use = ["edit"] },
+
+  # Images — use the system viewer
+  { mime = "image/*", use = ["open"] },
+
+  # Catch-all — try to open in neovim first
+  { mime = "*", use = ["edit"] },
+]
