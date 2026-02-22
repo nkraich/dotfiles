@@ -234,27 +234,25 @@ return {
   -- ── Search and replace ────────────────────────────────────────────────────────
   {
     "MagicDuck/grug-far.nvim",
-    opts = {
-      -- Start with ripgrep flags for case-insensitive search by default.
-      -- Toggle with the flags field inside the grug-far buffer.
-      startWithSearch       = true,
-      searchOnInsertLeave   = true,
-      windowCreationCommand = "vsplit",
-    },
-    keys = {
-      -- Open grug-far searching for word under cursor
-      { "<leader>sr", function()
-          require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } })
-        end, desc = "Search and replace (word)" },
-      -- Open grug-far with empty search
-      { "<leader>sR", function()
-          require("grug-far").open()
-        end, desc = "Search and replace" },
-      -- Search and replace within current visual selection only
-      { "<leader>sr", function()
-          require("grug-far").with_visual_selection()
-        end, mode = "v", desc = "Search and replace (selection)" },
-    },
+    event = "VeryLazy",
+    config = function()
+      require("grug-far").setup({
+        startWithSearch       = true,
+        normalModeSearch      = true,
+        windowCreationCommand = "vsplit",
+      })
+
+      local map = vim.keymap.set
+      map("n", "<leader>sr", function()
+        require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } })
+      end, { desc = "Search and replace (word under cursor)" })
+      map("n", "<leader>sR", function()
+        require("grug-far").open()
+      end, { desc = "Search and replace" })
+      map("v", "<leader>sr", function()
+        require("grug-far").with_visual_selection()
+      end, { desc = "Search and replace (selection)" })
+    end,
   },
 
 }
