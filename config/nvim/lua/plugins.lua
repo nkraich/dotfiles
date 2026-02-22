@@ -32,18 +32,17 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "lua", "vim", "vimdoc",
-          "javascript", "typescript", "tsx",
-          "python", "go", "rust",
-          "json", "yaml", "toml", "markdown",
-          "html", "css",
-          "bash",
-        },
-        auto_install    = true,
-        highlight       = { enable = true },
-        indent          = { enable = true },
+      -- The rewritten nvim-treesitter removed ensure_installed/highlight/indent
+      -- from setup(). Neovim 0.11 handles treesitter highlighting natively.
+      require("nvim-treesitter").setup()
+
+      -- Enable neovim's built-in treesitter highlighting per buffer.
+      -- pcall silently skips filetypes that have no parser installed yet.
+      -- Run :TSInstall stable (or :TSInstall <lang>) to add parsers.
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
       })
     end,
   },
@@ -86,18 +85,21 @@ return {
       require("mason").setup()
       require("mason-lspconfig").setup({
         -- Mason will auto-install these LSPs when you open a relevant file
+        -- Only auto-install servers that don't require a separate language
+        -- toolchain. Add "gopls" (needs Go), "rust_analyzer" (needs Rust),
+        -- etc. here once those runtimes are installed.
         ensure_installed = {
           "lua_ls",
-          "ts_ls",        -- TypeScript / JavaScript
-          "pyright",      -- Python
-          "gopls",        -- Go
-          "rust_analyzer",
+          "ts_ls",    -- TypeScript / JavaScript (installed via npm/node)
+          "pyright",  -- Python
         },
-        automatic_installation = true,
+        automatic_installation = false,
       })
 
-      local lspconfig   = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      -- Apply shared capabilities to all servers
+      vim.lsp.config("*", {
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+      })
 
       -- Attach keymaps when an LSP connects to a buffer
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -117,11 +119,8 @@ return {
         end,
       })
 
-      -- Configure each LSP (capabilities shared by all)
-      local servers = { "lua_ls", "ts_ls", "pyright", "gopls", "rust_analyzer" }
-      for _, server in ipairs(servers) do
-        lspconfig[server].setup({ capabilities = capabilities })
-      end
+      -- Enable servers — keep in sync with ensure_installed above
+      vim.lsp.enable({ "lua_ls", "ts_ls", "pyright" })
     end,
   },
 
@@ -179,7 +178,7 @@ return {
 
       -- Auto-install debug adapters via Mason
       require("mason-nvim-dap").setup({
-        ensure_installed = { "python", "node2", "delve" },
+        ensure_installed = { "python", "node2" },
         automatic_installation = true,
         handlers = {},  -- use default handlers from mason-nvim-dap
       })

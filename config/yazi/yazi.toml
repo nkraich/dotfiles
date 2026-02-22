@@ -10,11 +10,11 @@ max_width  = 1000
 max_height = 1000
 
 [opener]
-# Open files in the running neovim instance via neovim-remote.
-# --remote-wait opens the file and waits for the buffer to be closed before
-# returning control to yazi.
+# Open files in the neovim server running in the adjacent tmux pane.
+# $NVIM_SERVER is set per-session by tmuxinator (see tmuxinator/<project>.yml).
+# block = false keeps yazi active while the file is open in neovim.
 edit = [
-  { run = 'nvr --remote-wait "$@"', block = true, for = "unix" },
+  { run = 'nvr --servername "$NVIM_SERVER" --remote "$@"', block = false, for = "unix" },
 ]
 
 [open]
