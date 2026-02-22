@@ -32,3 +32,7 @@ windows:
       panes:
         # Language REPL — change to python3, irb, ghci, etc. as needed
         - node
+
+  - claude:
+      panes:
+        - claude

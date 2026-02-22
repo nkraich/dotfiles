@@ -35,9 +35,9 @@ local function tmuxSendKeys(target, keys)
 end
 
 -- ── Window focus ───────────────────────────────────────────────────────────────
--- Cmd+Shift+1 → focus the IDE terminal
+-- Cmd+Shift+1 → focus WezTerm, or launch it if not running
 hs.hotkey.bind({ "cmd", "shift" }, "1", function()
-  focusApp(TERMINAL_APP)
+  hs.application.launchOrFocus(TERMINAL_APP)
 end)
 
 -- Cmd+Shift+2 → focus the debug target app
