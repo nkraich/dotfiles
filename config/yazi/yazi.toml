@@ -1,5 +1,5 @@
-[manager]
-ratio          = [1, 3, 4]   # sidebar:current:preview column widths
+[mgr]
+ratio          = [1, 3, 0]   # sidebar:current:preview column widths (0 = hidden)
 sort_by        = "alphabetical"
 sort_dir_first = true
 show_hidden    = false
