@@ -15,10 +15,12 @@ windows:
   - editor:
       layout: even-horizontal  # 50/50 split left and right
       panes:
-        # Left sidebar: yazi — NVIM_SERVER exported so nvr knows where to connect
-        - export NVIM_SERVER=/tmp/nvim-example.sock && yazi
-        # Right pane: neovim listening on the session socket
-        - nvim --listen /tmp/nvim-example.sock .
+        # Left sidebar: yazi file browser
+        # NVIM env var must be set to the neovim socket so nvr can find it.
+        # neovim (started in the right pane) exports $NVIM automatically.
+        - yazi
+        # Right pane: neovim (starts the server; $NVIM is auto-exported)
+        - nvim .
 
   - server:
       layout: even-vertical
@@ -32,7 +34,3 @@ windows:
       panes:
         # Language REPL — change to python3, irb, ghci, etc. as needed
         - node
-
-  - claude:
-      panes:
-        - claude

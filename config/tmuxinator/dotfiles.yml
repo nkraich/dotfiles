@@ -1,0 +1,39 @@
+# Tmuxinator project for ~/Projects/dotfiles
+# Place in ~/.config/tmuxinator/dotfiles.yml
+# Start with: tmuxinator start dotfiles
+# Stop with:  tmuxinator stop dotfiles
+#
+# Window layout:
+#   editor  — left pane: yazi sidebar | right pane: neovim
+#   server  — spare panes for running scripts or watching output
+#   repl    — shell scratch pane
+#   claude  — Claude Code session
+
+name: dotfiles
+root: ~/Projects/dotfiles
+
+windows:
+  - editor:
+      layout: even-horizontal  # 50/50 split left and right
+      panes:
+        # Left sidebar: yazi — NVIM_SERVER exported so nvr knows where to connect
+        - export NVIM_SERVER=/tmp/nvim-dotfiles.sock && yazi
+        # Right pane: neovim listening on the session socket
+        - nvim --listen /tmp/nvim-dotfiles.sock .
+
+  - server:
+      layout: even-vertical
+      panes:
+        # Top pane: spare — run install scripts, symlink commands, etc.
+        - null
+        # Bottom pane: spare — tailing logs, watching output, etc.
+        - null
+
+  - repl:
+      panes:
+        # Shell scratch pane
+        - null
+
+  - claude:
+      panes:
+        - claude
