@@ -1,0 +1,6 @@
+# Tmuxinator project configs are machine-local — only the example template is tracked
+config/tmuxinator/*.yml
+!config/tmuxinator/example.yml
+
+# Neovim plugin lockfile is machine-local
+config/nvim/lazy-lock.json
