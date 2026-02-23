@@ -45,6 +45,8 @@ echo "==> Creating symlinks..."
 
 # Tmux
 symlink "$REPO_DIR/config/tmux/tmux.conf"             "$HOME/.config/tmux/tmux.conf"
+symlink "$REPO_DIR/config/tmux/start.sh"              "$HOME/.config/tmux/start.sh"
+chmod +x "$REPO_DIR/config/tmux/start.sh"
 
 # Neovim (link the entire nvim directory)
 symlink "$REPO_DIR/config/nvim"                        "$HOME/.config/nvim"
