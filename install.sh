@@ -68,6 +68,8 @@ symlink "$REPO_DIR/config/tmuxinator"                  "$HOME/.config/tmuxinator
 mkdir -p "$HOME/.local/bin"
 symlink "$REPO_DIR/scripts/ide-open.sh"                "$HOME/.local/bin/ide-open"
 symlink "$REPO_DIR/scripts/ide-kill.sh"                "$HOME/.local/bin/ide-kill"
+symlink "$REPO_DIR/scripts/ide-new.sh"                 "$HOME/.local/bin/ide-new"
+symlink "$REPO_DIR/scripts/ide-delete.sh"              "$HOME/.local/bin/ide-delete"
 
 # ── 3. Tmux Plugin Manager (TPM) ──────────────────────────────────────────────
 TPM_DIR="$HOME/.tmux/plugins/tpm"
