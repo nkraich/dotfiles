@@ -35,6 +35,9 @@ keymap = [
   { on = "<Space>", run = "select --state=none", desc = "Toggle selection" },
   { on = "A",       run = "select_all --state=none", desc = "Toggle all selections" },
 
+  # Git
+  { on = "<C-g>",   run = "shell 'lazygit' --block --cwd", desc = "Open lazygit" },
+
   # Quit yazi
   { on = "q",       run = "quit",             desc = "Quit yazi" },
 ]

@@ -60,6 +60,7 @@ symlink "$REPO_DIR/config/hammerspoon/init.lua"        "$HOME/.hammerspoon/init.
 # Yazi
 symlink "$REPO_DIR/config/yazi/yazi.toml"             "$HOME/.config/yazi/yazi.toml"
 symlink "$REPO_DIR/config/yazi/keymap.toml"           "$HOME/.config/yazi/keymap.toml"
+symlink "$REPO_DIR/config/yazi/init.lua"              "$HOME/.config/yazi/init.lua"
 
 # Tmuxinator
 symlink "$REPO_DIR/config/tmuxinator"                  "$HOME/.config/tmuxinator"
@@ -71,7 +72,12 @@ symlink "$REPO_DIR/scripts/ide-kill.sh"                "$HOME/.local/bin/ide-kil
 symlink "$REPO_DIR/scripts/ide-new.sh"                 "$HOME/.local/bin/ide-new"
 symlink "$REPO_DIR/scripts/ide-delete.sh"              "$HOME/.local/bin/ide-delete"
 
-# ── 3. Tmux Plugin Manager (TPM) ──────────────────────────────────────────────
+# ── 3. Yazi packages ───────────────────────────────────────────────────────────
+echo ""
+echo "==> Installing Yazi packages..."
+ya pkg install
+
+# ── 4. Tmux Plugin Manager (TPM) ──────────────────────────────────────────────
 TPM_DIR="$HOME/.tmux/plugins/tpm"
 if [ ! -d "$TPM_DIR" ]; then
   echo ""
@@ -79,7 +85,7 @@ if [ ! -d "$TPM_DIR" ]; then
   git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
 fi
 
-# ── 4. Shell PATH ──────────────────────────────────────────────────────────────
+# ── 5. Shell PATH ──────────────────────────────────────────────────────────────
 # Ensure ~/.local/bin is on PATH. Add to .zshrc if not already present.
 ZSHRC="$HOME/.zshrc"
 if ! grep -q '\.local/bin' "$ZSHRC" 2>/dev/null; then
@@ -88,7 +94,7 @@ if ! grep -q '\.local/bin' "$ZSHRC" 2>/dev/null; then
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$ZSHRC"
 fi
 
-# ── 5. Done ────────────────────────────────────────────────────────────────────
+# ── 6. Done ────────────────────────────────────────────────────────────────────
 echo ""
 echo "==> Done."
 echo ""
