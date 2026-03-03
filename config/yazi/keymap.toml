@@ -1,8 +1,8 @@
 # Yazi keymap overrides
 # Full default keymap reference: https://yazi-rs.github.io/docs/configuration/keymap
 
-[manager]
-keymap = [
+[mgr]
+prepend_keymap = [
   # Open file in neovim (via yazi.toml opener "edit")
   { on = "<Enter>", run = "open",             desc = "Open file in neovim" },
   { on = "o",       run = "open",             desc = "Open file in neovim" },
@@ -32,11 +32,11 @@ keymap = [
   { on = "N",       run = "find_arrow --previous", desc = "Previous search result" },
 
   # Selection
-  { on = "<Space>", run = "select --state=none", desc = "Toggle selection" },
+  { on = "<Space>", run = "select --state=none",     desc = "Toggle selection" },
   { on = "A",       run = "select_all --state=none", desc = "Toggle all selections" },
 
   # Git
-  { on = "<C-g>",   run = "shell 'lazygit' --block --cwd", desc = "Open lazygit" },
+  { on = "L",       run = "shell --block -- /opt/homebrew/bin/lazygit", desc = "Open lazygit" },
 
   # Quit yazi
   { on = "q",       run = "quit",             desc = "Quit yazi" },
