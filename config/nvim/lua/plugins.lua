@@ -183,6 +183,46 @@ return {
         handlers = {},  -- use default handlers from mason-nvim-dap
       })
 
+      -- ── Chrome / JS DAP (js-debug-adapter) ───────────────────────────────────
+      -- Install manually: :MasonInstall js-debug-adapter
+      -- Requires chrome-dev to be running (sets up CDP on port 9222).
+      -- Workflow: run `chrome-dev <url> --port <port>`, then <leader>dc in nvim.
+      local js_debug = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter"
+
+      if vim.fn.executable(js_debug) == 1 then
+        dap.adapters["pwa-chrome"] = {
+          type = "server",
+          host = "localhost",
+          port = "${port}",
+          executable = {
+            command = js_debug,
+            args    = { "${port}" },
+          },
+        }
+
+        local chrome_config = {
+          {
+            type    = "pwa-chrome",
+            request = "attach",
+            name    = "Attach to Chrome (CDP :9222)",
+            port    = 9222,
+            webRoot = "${workspaceFolder}",
+            -- sourceMaps = true,  -- uncomment when using a bundler (Vite, webpack)
+          },
+        }
+
+        dap.configurations.javascript      = chrome_config
+        dap.configurations.typescript      = chrome_config
+        dap.configurations.javascriptreact = chrome_config
+        dap.configurations.typescriptreact = chrome_config
+      else
+        vim.notify(
+          "js-debug-adapter not found — run :MasonInstall js-debug-adapter",
+          vim.log.levels.WARN,
+          { title = "nvim-dap" }
+        )
+      end
+
       dapui.setup()
 
       -- Auto-open/close UI when debugging starts/ends

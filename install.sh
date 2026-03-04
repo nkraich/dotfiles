@@ -71,6 +71,8 @@ symlink "$REPO_DIR/scripts/ide-open.sh"                "$HOME/.local/bin/ide-ope
 symlink "$REPO_DIR/scripts/ide-kill.sh"                "$HOME/.local/bin/ide-kill"
 symlink "$REPO_DIR/scripts/ide-new.sh"                 "$HOME/.local/bin/ide-new"
 symlink "$REPO_DIR/scripts/ide-delete.sh"              "$HOME/.local/bin/ide-delete"
+symlink "$REPO_DIR/scripts/chrome-dev.sh"             "$HOME/.local/bin/chrome-dev"
+chmod +x "$REPO_DIR/scripts/chrome-dev.sh"
 
 # ── 3. Yazi packages ───────────────────────────────────────────────────────────
 echo ""
