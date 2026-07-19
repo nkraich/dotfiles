@@ -1,40 +1,60 @@
 #!/usr/bin/env bash
-# ide-open — start or attach to a tmuxinator project session
+# ide-open — open a project by name, creating its .ide.yml if needed
 #
 # Usage:
-#   ide-open <project-name>
-#   ide-open              (lists available projects)
-#
-# The script:
-#   1. Checks that a tmuxinator config exists for the project
-#   2. Starts or attaches to the tmux session
-#   3. Updates the Hammerspoon debugger pane target for this project
+#   ide-open <project-name>   open ~/Projects/<project-name>
+#   ide-open                  list available projects
 
 set -e
 
-# ── List projects if no argument given ────────────────────────────────────────
+PROJECTS_DIR="$HOME/Projects"
+TEMPLATE="$HOME/.config/tmuxinator/template.yml"
+
+# ── List projects if no argument given ───────────────────────────────────────
 if [[ -z "$1" ]]; then
   echo "Available projects:"
-  tmuxinator list 2>/dev/null | tail -n +2
+  for d in "$PROJECTS_DIR"/*/; do
+    name=$(basename "$d")
+    if [[ -f "$d/.ide.yml" ]]; then
+      echo "  $name"
+    fi
+  done
   echo ""
   echo "Usage: ide-open <project-name>"
   exit 0
 fi
 
-PROJECT="$1"
-TMUXINATOR_CONFIG="$HOME/.config/tmuxinator/${PROJECT}.yml"
+NAME="$1"
+PROJECT_DIR="$PROJECTS_DIR/$NAME"
+CONFIG="$PROJECT_DIR/.ide.yml"
 
-if [[ ! -f "$TMUXINATOR_CONFIG" ]]; then
-  echo "Error: No tmuxinator config found at $TMUXINATOR_CONFIG"
-  echo "Copy config/tmuxinator/example.yml and rename it to ${PROJECT}.yml"
+if [[ ! -d "$PROJECT_DIR" ]]; then
+  mkdir -p "$PROJECT_DIR"
+  echo "Created: $PROJECT_DIR"
+fi
+
+if [[ ! -f "$TEMPLATE" ]]; then
+  echo "Error: template not found: $TEMPLATE"
   exit 1
 fi
 
-# ── Start or attach ───────────────────────────────────────────────────────────
-if tmux has-session -t "$PROJECT" 2>/dev/null; then
-  echo "Attaching to existing session: $PROJECT"
-  tmux attach-session -t "$PROJECT"
+# ── Create .ide.yml from template if missing ─────────────────────────────────
+if [[ ! -f "$CONFIG" ]]; then
+  sed "s/PROJECT_NAME/$NAME/g" "$TEMPLATE" > "$CONFIG"
+  echo "Created: $CONFIG"
+fi
+
+# ── Start or attach/switch ────────────────────────────────────────────────────
+if tmux has-session -t "$NAME" 2>/dev/null; then
+  if [[ -n "$TMUX" ]]; then
+    tmux switch-client -t "$NAME"
+  else
+    tmux attach-session -t "$NAME"
+  fi
 else
-  echo "Starting new session: $PROJECT"
-  tmuxinator start "$PROJECT"
+  echo "Starting new session: $NAME"
+  tmuxinator start "$NAME" --project-config="$CONFIG"
+  if [[ -n "$TMUX" ]]; then
+    tmux switch-client -t "$NAME"
+  fi
 fi
