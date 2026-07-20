@@ -133,7 +133,6 @@ cat > "${APP_BUNDLE}/Contents/MacOS/launcher" << LAUNCHER
 exec "${CHROME_BIN}" \\
   --user-data-dir="${PROFILE_DIR}" \\
   --remote-debugging-port="${CDP_PORT}" \\
-  --auto-open-devtools-for-tabs \\
   --window-size="${WINDOW_SIZE}" \\
   --no-first-run \\
   --no-default-browser-check \\
