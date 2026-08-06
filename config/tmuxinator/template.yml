@@ -9,6 +9,20 @@
 name: PROJECT_NAME
 root: ~/Projects/PROJECT_NAME
 
+# ── Commands (Hammerspoon shortcuts) ───────────────────────────────────────────
+# cmd:  shell command to run
+# pane: optional tmux target (window.pane) — omit to open a new window
+#
+# Shortcuts: Cmd+Shift+R (run), Cmd+Shift+B (build), Cmd+Shift+C (clean)
+#            Cmd+Shift+K (kill)
+commands:
+  run:
+    cmd: echo "define a run command for this project"
+  build:
+    cmd: echo "define a build command for this project"
+  clean:
+    cmd: echo "define a clean command for this project"
+
 windows:
   - editor:
       layout: even-horizontal  # 50/50 split left and right

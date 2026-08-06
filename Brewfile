@@ -8,6 +8,7 @@ brew "neovim"
 brew "yazi"           # terminal file browser
 brew "nvr"            # neovim-remote: open files in running nvim instance
 brew "tmuxinator"     # tmux session templates
+brew "yq"             # YAML query tool (used by Hammerspoon to read .ide.yml commands)
 brew "direnv"         # per-project environment variables
 brew "mise"           # per-project language runtime versions (node, python, ruby, etc.)
 
