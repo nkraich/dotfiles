@@ -61,6 +61,7 @@ symlink "$REPO_DIR/config/hammerspoon/init.lua"        "$HOME/.hammerspoon/init.
 symlink "$REPO_DIR/config/yazi/yazi.toml"             "$HOME/.config/yazi/yazi.toml"
 symlink "$REPO_DIR/config/yazi/keymap.toml"           "$HOME/.config/yazi/keymap.toml"
 symlink "$REPO_DIR/config/yazi/init.lua"              "$HOME/.config/yazi/init.lua"
+symlink "$REPO_DIR/config/yazi/package.toml"          "$HOME/.config/yazi/package.toml"
 
 # Tmuxinator
 symlink "$REPO_DIR/config/tmuxinator"                  "$HOME/.config/tmuxinator"
@@ -96,7 +97,34 @@ if ! grep -q '\.local/bin' "$ZSHRC" 2>/dev/null; then
   echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$ZSHRC"
 fi
 
-# ── 6. Done ────────────────────────────────────────────────────────────────────
+# mise (per-project language runtime versions). Activate its shims in the
+# shell and install a global Node so tools that spawn outside any project
+# directory (e.g. Mason in nvim) still find node/npm.
+if ! grep -q 'mise activate' "$ZSHRC" 2>/dev/null; then
+  echo ""
+  echo "==> Adding 'mise activate' to ~/.zshrc..."
+  echo 'eval "$(mise activate zsh)"' >> "$ZSHRC"
+fi
+
+echo ""
+echo "==> Installing global Node via mise..."
+mise use --global node@lts
+
+# ── 6. Sanity checks ───────────────────────────────────────────────────────────
+# Catch broken configs / missing tools now instead of the next time the
+# affected tool is opened.
+echo ""
+echo "==> Running sanity checks..."
+
+if ! yazi --version &>/dev/null; then
+  echo "  WARNING: 'yazi --version' failed — yazi.toml likely has a config error. Run 'yazi --version' to see it."
+fi
+
+if ! zsh -ic 'command -v npm' &>/dev/null; then
+  echo "  WARNING: npm is not resolving in an interactive shell — check mise activation in ~/.zshrc."
+fi
+
+# ── 7. Done ────────────────────────────────────────────────────────────────────
 echo ""
 echo "==> Done."
 echo ""

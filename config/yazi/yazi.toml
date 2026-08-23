@@ -1,12 +1,14 @@
 [[plugin.prepend_fetchers]]
-id  = "git"
-url = "*"
-run = "git"
+id    = "git"
+group = "git"
+url   = "*"
+run   = "git"
 
 [[plugin.prepend_fetchers]]
-id  = "git"
-url = "*/"
-run = "git"
+id    = "git"
+group = "git"
+url   = "*/"
+run   = "git"
 
 [mgr]
 ratio          = [1, 3, 0]   # sidebar:current:preview column widths (0 = hidden)
@@ -24,13 +26,13 @@ max_height = 1000
 # $NVIM_SERVER is set per-session by tmuxinator (see tmuxinator/<project>.yml).
 # block = false keeps yazi active while the file is open in neovim.
 edit = [
-  { run = 'nvr --servername "$NVIM_SERVER" --remote "$@"', block = false, for = "unix" },
+  { run = 'nvr --servername "$NVIM_SERVER" --remote %s', block = false, for = "unix" },
 ]
 
 [open]
 rules = [
   # Directories — open in yazi (default)
-  { name = "*/", use = ["edit"] },
+  { url = "*/", use = ["edit"] },
 
   # Text and code files — open in neovim
   { mime = "text/*",                use = ["edit"] },
